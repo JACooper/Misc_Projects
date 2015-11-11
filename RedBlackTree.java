@@ -70,13 +70,13 @@ class RedBlackTree
         if(root == null)            //If there's no root, make one
         {
             root = newNode;
-            root.switchColor();        //Make root black
+            root.switchColor();     //Make root black
         }
         else
         {
             Node current = root;
-            boolean left = false;    //For determining if the node took a left or right turn
-            int tempDepth = 0;        //For determining node "depth" in the tree
+            boolean left = false;   //For determining if the node took a left or right turn
+            int tempDepth = 0;      //For determining node "depth" in the tree
             
             boolean inserted = false;
             boolean balanced = false;
@@ -84,7 +84,7 @@ class RedBlackTree
             {
                 Node parent = null;
                 
-                if (newNode.getNumber() < current.getNumber())        //Left turn
+                if (newNode.getNumber() < current.getNumber())      //Left turn
                 {
                     parent = current;
                     current = current.getLeftChild();
@@ -92,7 +92,7 @@ class RedBlackTree
                     tempDepth++;
                 }
                 
-                else if (newNode.getNumber() > current.getNumber())    //Right turn
+                else if (newNode.getNumber() > current.getNumber()) //Right turn
                 {
                     parent = current;
                     current = current.getRightChild();
@@ -110,7 +110,7 @@ class RedBlackTree
                 
                 if (current == null)
                 {
-                    if (left == true)    //Left turn
+                    if (left == true)   //Left turn
                     {
                         parent.setLeftChild(newNode);
                         newNode.setIsLeftChild();
@@ -131,7 +131,7 @@ class RedBlackTree
             {    
                 if (current.getParent() != null
                     && current.getParent().isRed() == true
-                    && current.isRed() == true)    //Created red-on-red conflict -> rotate
+                    && current.isRed() == true) //Created red-on-red conflict -> rotate
                 {
                     Node uncle = null;
                     boolean leftChild = false;
@@ -140,46 +140,46 @@ class RedBlackTree
                     boolean rightGrandchild = false;
                     
                     if (current.getIsLeftChild() == true)
-                        leftGrandchild = true;                                        //Current is a left child
+                        leftGrandchild = true;                                      //Current is a left child
                     else
-                        rightGrandchild = true;                                        //Current is a right child
+                        rightGrandchild = true;                                     //Current is a right child
                     
                     if (current.getParent().getIsLeftChild() == true)
                     {
-                        leftChild = true;                                            //Parent is a left child
+                        leftChild = true;                                           //Parent is a left child
                         uncle = current.getParent().getParent().getRightChild();    //Uncle is a right child
                     }
                     else if (current.getParent().getIsRightChild() == true)
                     {
-                        rightChild = true;                                            //Parent is a right child
-                        uncle = current.getParent().getParent().getLeftChild();        //Uncle is a left child
+                        rightChild = true;                                          //Parent is a right child
+                        uncle = current.getParent().getParent().getLeftChild();     //Uncle is a left child
                     }
                     
                     if (uncle == null || uncle.isRed() == false)                    //If uncle is black or null -> rotate
                     {
                         if (leftGrandchild == true && leftChild == true)            //Outer left rotation
                             this.rotateRight(current.getParent().getParent());
-                        else if (rightGrandchild == true && rightChild == true)        //Outer right rotation
+                        else if (rightGrandchild == true && rightChild == true)     //Outer right rotation
                             this.rotateLeft(current.getParent().getParent());
                         else if (leftGrandchild == true)                            //Current is inner left grandchild
                         {
-                            this.rotateRight(current.getParent());                    //Rotate parent right
-                            this.rotateLeft(current.getParent());                    //Rotate current left
+                            this.rotateRight(current.getParent());                  //Rotate parent right
+                            this.rotateLeft(current.getParent());                   //Rotate current left
                         }
-                        else if (rightGrandchild == true)                            //Current is inner right grandchild
+                        else if (rightGrandchild == true)                           //Current is inner right grandchild
                         {
-                            this.rotateLeft(current.getParent());                    //Rotate parent left
-                            this.rotateRight(current.getParent());                    //Rotate current right
+                            this.rotateLeft(current.getParent());                   //Rotate parent left
+                            this.rotateRight(current.getParent());                  //Rotate current right
                         }
                     }
-                    else if (uncle.isRed() == true)                                    //Red -> recolor
+                    else if (uncle.isRed() == true)                                 //Red -> recolor
                     {
-                        colorSwap(current.getParent().getParent());                    //Make grandparent red, parent and uncle black
-                        current = current.getParent().getParent();                    //Current = grandparent to check for red-red violation above
+                        colorSwap(current.getParent().getParent());                 //Make grandparent red, parent and uncle black
+                        current = current.getParent().getParent();                  //Current = grandparent to check for red-red violation above
                     }
                 }//End of if
                 else
-                    balanced = true;    //No more conflicts, therefore tree is balanced, end loop
+                    balanced = true;    //No more conflicts, tree is balanced, end loop
             }//End of while
         }//End of else
     }//End of insert
@@ -187,21 +187,21 @@ class RedBlackTree
     /// Swap method
     /// Takes in a node and makes both it and its sibling black
     /// If its parent is not the root, also make its parent red
-    public void colorSwap(Node n)                //Make a node and its sibling black
+    public void colorSwap(Node n)               //Make a node and its sibling black
     {
         Node lc = n.getLeftChild();
         Node rc = n.getRightChild();
-        if (lc != null && lc.isRed() == true)    //Make left child black
+        if (lc != null && lc.isRed() == true)   //Make left child black
             lc.switchColor();
-        if (rc != null && rc.isRed() == true)    //Make right child black
+        if (rc != null && rc.isRed() == true)   //Make right child black
             rc.switchColor();
-        if (n != root)                            //If you aren't at the top of the tree, go black -> red
+        if (n != root)                          //If you aren't at the top of the tree, go black -> red
             n.switchColor();
     }
     
     /// Counter Clockwise rotation method
     /// Rakes in a node and performs a counter clockwise rotation on it
-    public void rotateLeft(Node N)                //Counter Clockwise
+    public void rotateLeft(Node N)          //Counter Clockwise
     {
         Node temp1 = N.getRightChild();
         N.severRightChild();                //Cut connection
@@ -209,20 +209,20 @@ class RedBlackTree
         {
             Node temp2 = N.getParent();
             temp1.setParent(temp2);
-            if (temp2.getLeftChild() == N)    //N was a left child
+            if (temp2.getLeftChild() == N)  //N was a left child
             {
-                temp2.setLeftChild(temp1);    //temp1 takes N's place
+                temp2.setLeftChild(temp1);  //temp1 takes N's place
                 temp2.setIsLeftChild();
             }
             else                            //N was a right child
             {
-                temp2.setRightChild(temp1);    //temp1 takes N's place
+                temp2.setRightChild(temp1); //temp1 takes N's place
                 temp2.setIsRightChild();
             }
         }
-        N.setParent(temp1);                    //Rotate node (child becomes parent)
+        N.setParent(temp1);                 //Rotate node (child becomes parent)
         
-        if (temp1.getLeftChild() != null)    //temp1 has a crossover node
+        if (temp1.getLeftChild() != null)   //temp1 has a crossover node
         {
             Node temp3 = temp1.getLeftChild();
             N.setRightChild(temp3);
@@ -230,12 +230,12 @@ class RedBlackTree
             temp3.setIsRightChild();
         }
         
-        temp1.setLeftChild(N);                //Attach rotated node
+        temp1.setLeftChild(N);              //Attach rotated node
                                             //(former parent becomes child)
         N.setIsLeftChild();
-        if (temp1.isRed() == true)            //If the new parent (or "root") is red
+        if (temp1.isRed() == true)          //If the new parent (or "root") is red
             temp1.switchColor();            //Make "root" black
-        if (N.isRed() == false)                //If the rotated node (the left child) is black
+        if (N.isRed() == false)             //If the rotated node (the left child) is black
             N.switchColor();                //Make it red
     }
     
@@ -244,25 +244,25 @@ class RedBlackTree
     public void rotateRight(Node N)
     {
         Node temp1 = N.getLeftChild();
-        N.severLeftChild();                    //Cut connection
+        N.severLeftChild();                 //Cut connection
         if (N.getParent() != null)
         {
             Node temp2 = N.getParent();
             temp1.setParent(temp2);
-            if (temp2.getLeftChild() == N)    //N was a left child
+            if (temp2.getLeftChild() == N)  //N was a left child
             {
-                temp2.setLeftChild(temp1);    //temp1 takes N's place
+                temp2.setLeftChild(temp1);  //temp1 takes N's place
                 temp1.setIsLeftChild();
             }
             else                            //N was a right child
             {
-                temp2.setRightChild(temp1);    //temp1 takes N's place
+                temp2.setRightChild(temp1); //temp1 takes N's place
                 temp1.setIsRightChild();
             }
         }
-        N.setParent(temp1);                    //Rotate node
+        N.setParent(temp1);                 //Rotate node
         
-        if (temp1.getRightChild() != null)    //temp1 has a crossover node
+        if (temp1.getRightChild() != null)  //temp1 has a crossover node
         {
             Node temp2 = temp1.getRightChild();
             N.setLeftChild(temp2);
@@ -270,25 +270,25 @@ class RedBlackTree
             temp2.setIsLeftChild();
         }
         
-        temp1.setRightChild(N);                //Attach rotated node
+        temp1.setRightChild(N);             //Attach rotated node
                                             //(former parent becomes child)
         N.setIsRightChild();
-        if (temp1.isRed() == true)            //If the new parent (or "root") is red
+        if (temp1.isRed() == true)          //If the new parent (or "root") is red
             temp1.switchColor();            //Make "root" black
-        if (N.isRed() == false)                //If the rotated node (the right child) is black
+        if (N.isRed() == false)             //If the rotated node (the right child) is black
             N.switchColor();                //Make it red
     }
     
     /// Recursive computational method
     /// Counts the number of black nodes in a tree to determine its black height
     /// Returns the tree's black height as a number
-    public int getBlackHeight(Node subRoot)        //Recursive computational method
+    public int getBlackHeight(Node subRoot)
     {
         int height = 0;
         if (subRoot.getLeftChild() == null
-            && subRoot.getRightChild() == null)    //If it's a leaf (base case)
+            && subRoot.getRightChild() == null) //If it's a leaf (base case)
         {
-            if (subRoot.isRed() == false)        //Leaf node is black
+            if (subRoot.isRed() == false)       //Leaf node is black
                 height++;
         }
         else
@@ -298,7 +298,7 @@ class RedBlackTree
             else if (subRoot.getRightChild() != null)
                 height = getBlackHeight(subRoot.getRightChild());
             
-            if (subRoot.isRed() == false)        //Calling node is black
+            if (subRoot.isRed() == false)       //Calling node is black
                 height++;
         }
         return height;
@@ -310,7 +310,7 @@ class RedBlackTree
     public String searchTree(int searchKey)
     {
         String returnString = "";
-        if (root == null)        //Tree does not yet exist
+        if (root == null)       //Tree does not yet exist
             returnString = "The tree is empty, please insert nodes prior to search.";
         else
         {
@@ -418,7 +418,7 @@ class RedBlackTree
         Node returnNode = null;
         if(root == null)
         {
-            returnNode = null;        //Tree does not yet exist, return nothing
+            returnNode = null;      //Tree does not yet exist, return nothing
         }
         else
         {
@@ -430,7 +430,7 @@ class RedBlackTree
                 
                 if (searchKey < current.getNumber())        //Left turn
                     current = current.getLeftChild();
-                else if (searchKey > current.getNumber())    //Right turn
+                else if (searchKey > current.getNumber())   //Right turn
                     current = current.getRightChild();
                 
                 else if (searchKey == current.getNumber())
@@ -441,7 +441,7 @@ class RedBlackTree
                 
                 if (current == null)            //If the last move exited the tree
                 {
-                    returnNode = null;            //Node does not exist
+                    returnNode = null;          //Node does not exist
                 }
             }
             
@@ -456,11 +456,11 @@ class RedBlackTree
     /// Currently unimplemented
     public void delete(int searchKey)
     {
-        if (root == null){}                                    //Tree does not yet exist, do nothing
+        if (root == null){}                 //Tree does not yet exist, do nothing
         else
         {
             Node deletionNode = this.search(root, new Node(searchKey));
-            if (deletionNode != null)                        //Node exists and was found
+            if (deletionNode != null)       //Node exists and was found
             {
                 
             }
@@ -474,7 +474,7 @@ class RedBlackTree
     {
         String resultString = "";
         if (subRoot.getLeftChild() == null
-            && subRoot.getRightChild() == null)    //If it's a leaf (base case)
+            && subRoot.getRightChild() == null)     //If it's a leaf (base case)
         {
             //System.out.println("base case hit");
             resultString += subRoot.getNumber();
@@ -607,20 +607,20 @@ class Node
     //Could also make overloaded setter methods with no parameters do deletion
     public void severRightChild()
     {
-        rightChild = null;        //Sever the node's rightChild connection
+        rightChild = null;      //Sever the node's rightChild connection
     }
     
     public void severLeftChild()
     {
-        leftChild = null;        //Sever the node's leftChild connection
+        leftChild = null;       //Sever the node's leftChild connection
     }
     
     public boolean equalData(Node n)
     {
         boolean equivalent = false;
-        if (n != null)                                //If the other node exists
-            if (this.getNumber() == n.getNumber())    //And their numbers are equivalent
-                equivalent = true;                    //Then the two have equal data
+        if (n != null)                              //If the other node exists
+            if (this.getNumber() == n.getNumber())  //And their numbers are equivalent
+                equivalent = true;                  //Then the two have equal data
         return equivalent;
     }
     
